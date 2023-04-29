@@ -7,15 +7,12 @@ import (
 	"fmt"
 	"hash/crc32"
 	"io"
-	"sync"
 )
 
 // STUDENTS: edit this file
 
 // EthernetSwitch implements the ethernet switch functionality
 type EthernetSwitch struct {
-	mu sync.Mutex
-
 	sendQueueSize int
 	ports         []Port
 	macTable      map[MACAddress]int
@@ -78,16 +75,17 @@ func (sw *EthernetSwitch) pool(port Port, i int, sendChans []chan *Frame) {
 			break
 		}
 		if frame != nil {
+
 			sw.forward(i, frame, sendChans)
 		}
 	}
 }
 
 func (sw *EthernetSwitch) forward(i int, frame *Frame, sendChans []chan *Frame) {
-	sw.mu.Lock()
-	defer sw.mu.Unlock()
+	if _, ok := sw.macTable[frame.Source]; !ok {
+		sw.macTable[frame.Source] = i
+	}
 
-	sw.macTable[frame.Source] = i
 	dstPort, ok := sw.macTable[frame.Destination]
 	if !ok {
 		// broadcast the frame to all ports except the source port
@@ -112,9 +110,7 @@ func (sw *EthernetSwitch) forward(i int, frame *Frame, sendChans []chan *Frame) 
 // This may only be called while Run() is called.
 func (sw *EthernetSwitch) RunSize() int {
 	// STUDENTS: implement this
-	sw.mu.Lock()
 	size := len(sw.macTable)
-	defer sw.mu.Unlock()
 	return size
 }
 
