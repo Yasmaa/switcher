@@ -15,6 +15,7 @@ import (
 
 func assertEqualFrame(t *testing.T, a, b *eth.Frame) {
 	t.Helper()
+
 	if a.Source != b.Source {
 		t.Errorf("Sources do not match: %s != %s", net.HardwareAddr(a.Source[:]), b.Source)
 	}
@@ -225,7 +226,7 @@ func TestSwitch_Simple(t *testing.T) {
 		expectSize(t, sw.RunSize(), 1)
 
 		t.Run("unicast", func(t *testing.T) {
-			// discovery of macB, unicast
+			// 	// discovery of macB, unicast
 			frameBA3 := eth.Frame{macB, macA, []byte{3}}
 			writeFrame(t, ports[1].Input, frameBA3)
 			expectFrame(t, ports[0].Output, &frameBA3)

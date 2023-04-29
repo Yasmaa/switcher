@@ -30,10 +30,10 @@ type Frame struct {
 func (f *Frame) String() string {
 	if len(f.Data) <= 2 {
 		return fmt.Sprintf("%s->%s data %v", f.Source, f.Destination, f.Data)
-	} else {
-		// large packet
-		return fmt.Sprintf("%s->%s length %d", f.Source, f.Destination, len(f.Data))
 	}
+	// large packet
+	return fmt.Sprintf("%s->%s length %d", f.Source, f.Destination, len(f.Data))
+
 }
 
 // Port represents a physical ethernet port on a switch
