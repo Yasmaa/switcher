@@ -37,7 +37,3 @@ In this assignment you will write a software implementation of an ethernet switc
 - The package "encoding/binary" and "hash/crc32" might come in handy when parsing and formatting ethernet frames.
 - Use the `Makefile`.  For example, you can run tests with `make test -B`.  To make sure your code is properly formatted run `make fix`.
 
-## Submission
-
-- Commit and push your working code to your GIT repository.
-- Ensure all tests pass otherwise you will receive no credit.
