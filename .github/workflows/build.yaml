@@ -1,0 +1,32 @@
+name: Build and Upload
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.x # Replace with the desired Go version
+
+      - name: Build and package for supported OS
+        run: |
+          mkdir -p artifacts
+          GOOS=linux GOARCH=amd64 go build -o artifacts/myapp-linux-amd64
+          GOOS=darwin GOARCH=amd64 go build -o artifacts/myapp-darwin-amd64
+          # Add more build commands for other supported OS/ARCH combinations
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: myapp-artifacts
+          path: artifacts/
